@@ -2,6 +2,8 @@ import { createCipheriv } from "crypto";
 import { devices, chromium } from "playwright-chromium";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+
+import gnarly from "./gnarly.js";
 import Utils from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -128,8 +130,15 @@ class Signer {
     let signed_url = newUrl + "&_signature=" + token;
     let queryString = new URL(signed_url).searchParams.toString();
     let bogus = await this.page.evaluate(`generateBogus("${queryString}","${this.userAgent}")`);
-    signed_url += "&X-Bogus=" + bogus;
 
+    let gnarly = gnarly({
+      queryString: queryString,
+      body: "",
+      userAgent: this.userAgent
+    });
+
+    signed_url += "&X-Bogus=" + bogus;
+    signed_url += "&X-Gnarly=" + gnarly;
 
     return {
       signature: token,
@@ -137,6 +146,7 @@ class Signer {
       signed_url: signed_url,
       "x-tt-params": this.xttparams(queryString),
       "x-bogus": bogus,
+      "x-gnarly": gnarly
     };
   }
 
