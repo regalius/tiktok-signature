@@ -198,7 +198,7 @@ function gnarly({
         val = (str.charCodeAt(i - 1) & 255) | val
 
 
-        pos = val & 16515072
+        let pos = val & 16515072
         pos = pos >> 18
         res += charSet.charAt(pos)
 
@@ -219,4 +219,3 @@ function gnarly({
 }
 
 export default gnarly
-

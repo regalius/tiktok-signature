@@ -3,7 +3,7 @@ import { devices, chromium } from "playwright-chromium";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
-import gnarly from "./gnarly.js";
+import gnarlyEncode from "./gnarly.js";
 import Utils from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -131,7 +131,7 @@ class Signer {
     let queryString = new URL(signed_url).searchParams.toString();
     let bogus = await this.page.evaluate(`generateBogus("${queryString}","${this.userAgent}")`);
 
-    let gnarly = gnarly({
+    let gnarly = gnarlyEncode({
       queryString: queryString,
       body: "",
       userAgent: this.userAgent
